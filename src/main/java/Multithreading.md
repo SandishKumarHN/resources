@@ -1,4 +1,4 @@
-##Java Multi Threading:##
+## Java Multi Threading: ##
     
     Three Ways to Implement multithreading
 	-   extend Thread class
@@ -14,7 +14,7 @@
         Java designer recognizes this and that's why Executors accept Runnable as Task and they have worker thread which executes those task.
         Inheriting all Thread methods are additional overhead just for representing a Task which can be done easily with Runnable.
 
-###Synchronization:###
+### Synchronization: ###
 
 ### Volatile: ###
     
