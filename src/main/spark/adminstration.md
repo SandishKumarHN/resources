@@ -11,7 +11,7 @@
 ![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/08/yarnflow1.png)
 
 ## Resource Manager: ##
-    ![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/08/resource_manager.png)
+![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/08/resource_manager.png)
     
     -   YARN Resource Manager Service (RM) is the central controlling authority for resource management and 
         makes allocation decisions ResourceManager has two main components: Scheduler and ApplicationsManager. 
