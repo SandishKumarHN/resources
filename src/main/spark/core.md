@@ -1,4 +1,4 @@
-Transformations vs Actions:
+## Transformations vs Actions: ##
 
     Transformations: which create a new dataset from an existing one, All transformations in Spark are lazy, in that they do not compute their results right away. Instead, they just remember the transformations applied to some base dataset (e.g. a file). The transformations are only computed when an action requires a result to be returned to the driver program. 
     Actions: which return a value to the driver program after running a computation on the dataset.
@@ -31,21 +31,17 @@ Transformations vs Actions:
     reduce: Action, Aggregate the elements of the dataset using a function func.
     foreach: Action, Run a function func on each element of the dataset. This is usually done for side effects such as updating an Accumulator or interacting with external storage systems.
     more from here http://homepage.cs.latrobe.edu.au/zhe/ZhenHeSparkRDDAPIExamples.html#aggregateByKey
-
+    
+## Shuffle Operations: ##
 
     
-    
-
-Shuffle Operations:
-
-    
-Caching
-Shared Variable
+## Caching ##
+## Shared Variable ##
     Broadcasting:
     Accumulators:       
-RDD STORAGE:
+## RDD STORAGE: ##
 
-ReduceBy vs GroupBy vs aggregateByKey:
+## ReduceBy vs GroupBy vs aggregateByKey: ##
 
     -   groupByKey() is just to group your dataset based on a key. 
         It will result in data shuffling when RDD is not already partitioned.
@@ -59,10 +55,10 @@ ReduceBy vs GroupBy vs aggregateByKey:
 
 ![Alt text](http://2.bp.blogspot.com/-AkXz3JDeRQA/VdXvOvRmNBI/AAAAAAAAAoE/HVyF8mn3t8A/s1600/pic1.jpg) vs ![Alt text](http://3.bp.blogspot.com/-ZCgP18Cz7bY/VdXvernORRI/AAAAAAAAAoM/yCOMYGnFsBI/s1600/pic2.jpg)
 
-RDD vs DataFrame vs Dataset:
+## RDD vs DataFrame vs Dataset: ##
 ![Alt text](http://image.slidesharecdn.com/sparkrddvsdataframevsdataset-171122065627/95/spark-rdd-vs-data-frame-vs-dataset-2-638.jpg) ![Alt text](http://image.slidesharecdn.com/sparkrddvsdataframevsdataset-171122065627/95/spark-rdd-vs-data-frame-vs-dataset-3-638.jpg)
 
-Parquet vs Avro Vs Orc:
+## Parquet vs Avro Vs Orc: ##
 
     Avro:
         -   Row-based, offers a compact and fast binary format
