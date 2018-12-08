@@ -2,82 +2,82 @@ Spark Tuning:
 	
 Data Serialization:
 
-    data serialization, which is crucial for good network performance and can also reduce memory use
-		
-		Java serialization: 
-			Spark serializes objects using Java’s ObjectOutputStream framework, and can work with any class you create that implements java.io.Serializable. 
-			You can also control the performance of your serialization more closely by extending java.io.Externalizable. 
-			Java serialization is flexible but often quite slow, and leads to large serialized formats for many classes.
-		Kryo serialization: 
-			Spark can also use the Kryo library (version 4) to serialize objects more quickly. 
-			Kryo is significantly faster and more compact than Java serialization (often as much as 10x), 
-			but does not support all Serializable types and requires you to register the classes you’ll 
-			use in the program in advance for best performance. conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
-			Kyro serializer used for not only shuffling data between worker nodes but also when serializing RDDs to disk. 
-			The only reason Kryo is not the default is because of the custom registration requirement,
-			but we recommend trying it in any network-intensive application
+data serialization, which is crucial for good network performance and can also reduce memory use
+
+Java serialization: 
+	Spark serializes objects using Java’s ObjectOutputStream framework, and can work with any class you create that implements java.io.Serializable. 
+	You can also control the performance of your serialization more closely by extending java.io.Externalizable. 
+	Java serialization is flexible but often quite slow, and leads to large serialized formats for many classes.
+Kryo serialization: 
+	Spark can also use the Kryo library (version 4) to serialize objects more quickly. 
+	Kryo is significantly faster and more compact than Java serialization (often as much as 10x), 
+	but does not support all Serializable types and requires you to register the classes you’ll 
+	use in the program in advance for best performance. conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+	Kyro serializer used for not only shuffling data between worker nodes but also when serializing RDDs to disk. 
+	The only reason Kryo is not the default is because of the custom registration requirement,
+	but we recommend trying it in any network-intensive application
 	
 Memory Tuning:
 		
-		There are three considerations in tuning memory usage 
-			 the amount of memory used by your objects (you may want your entire dataset to fit in memory)
-			 the cost of accessing those objects, 
-			 the overhead of garbage collection (if you have high turnover in terms of objects)
-		
-		By default, Java objects are fast to access, but can easily consume a factor of 2-5x more space than the “raw” data inside their fields. 
-		
-		- Each distinct Java object has an “object header”, which is about 16 bytes and contains information such as a pointer to its class. 
-		  For an object with very little data in it (say one Int field), this can be bigger than the data.
-		- Java Strings have about 40 bytes of overhead over the raw string data (since they store it in an array of Chars and keep extra data such as the length), 
-		  and store each character as two bytes due to String’s internal usage of UTF-16 encoding. 
-		  Thus a 10-character string can easily consume 60 bytes.
-		- Common collection classes, such as HashMap and LinkedList, use linked data structures, where there is a “wrapper” object for each entry (e.g. Map.Entry). 
-		  This object not only has a header, but also pointers (typically 8 bytes each) to the next object in the list.
-		- Collections of primitive types often store them as “boxed” objects such as java.lang.Integer
+There are three considerations in tuning memory usage 
+	 the amount of memory used by your objects (you may want your entire dataset to fit in memory)
+	 the cost of accessing those objects, 
+	 the overhead of garbage collection (if you have high turnover in terms of objects)
+
+By default, Java objects are fast to access, but can easily consume a factor of 2-5x more space than the “raw” data inside their fields. 
+
+- Each distinct Java object has an “object header”, which is about 16 bytes and contains information such as a pointer to its class. 
+  For an object with very little data in it (say one Int field), this can be bigger than the data.
+- Java Strings have about 40 bytes of overhead over the raw string data (since they store it in an array of Chars and keep extra data such as the length), 
+  and store each character as two bytes due to String’s internal usage of UTF-16 encoding. 
+  Thus a 10-character string can easily consume 60 bytes.
+- Common collection classes, such as HashMap and LinkedList, use linked data structures, where there is a “wrapper” object for each entry (e.g. Map.Entry). 
+  This object not only has a header, but also pointers (typically 8 bytes each) to the next object in the list.
+- Collections of primitive types often store them as “boxed” objects such as java.lang.Integer
 		
 Memory Management:
 
-			-	Memory usage in Spark largely falls under one of two categories: execution and storage. 
-				Execution memory refers to that used for computation in shuffles, joins, sorts and aggregations, 
-				while storage memory refers to that used for caching and propagating internal data across the cluster. 
-			-	Spark, execution and storage share a unified region (M). When no execution memory is used, storage can acquire all the available memory and vice versa. 
-				Execution may evict storage if necessary, but only until total storage memory usage falls under a certain threshold (R).
-			-	First, applications that do not use caching can use the entire space for execution, obviating unnecessary disk spills. 
-				Second, applications that do use caching can reserve a minimum storage space (R) where their data blocks are immune to being evicted. 
-				Lastly, this approach provides reasonable out-of-the-box performance for a variety of workloads without requiring user expertise of how memory is divided internally.
+-	Memory usage in Spark largely falls under one of two categories: execution and storage. 
+	Execution memory refers to that used for computation in shuffles, joins, sorts and aggregations, 
+	while storage memory refers to that used for caching and propagating internal data across the cluster. 
+-	Spark, execution and storage share a unified region (M). When no execution memory is used, storage can acquire all the available memory and vice versa. 
+	Execution may evict storage if necessary, but only until total storage memory usage falls under a certain threshold (R).
+-	First, applications that do not use caching can use the entire space for execution, obviating unnecessary disk spills. 
+	Second, applications that do use caching can reserve a minimum storage space (R) where their data blocks are immune to being evicted. 
+	Lastly, this approach provides reasonable out-of-the-box performance for a variety of workloads without requiring user expertise of how memory is divided internally.
 
 ![Alt text](https://cdn-images-1.medium.com/max/2000/1*kKitFswq56j1CTgMQ0gumQ.png)
 
-		spark.memory.fraction:
-			-	expresses the size of M as a fraction of the (JVM heap space - 300MB) (default 0.6). 
-				The rest of the space (40%) is reserved for user data structures, internal metadata in Spark, 
-				and safeguarding against OOM errors in the case of sparse and unusually large records.
-			-	spark.memory.fraction should be set in order to fit this amount of heap space comfortably within the JVM’s old or “tenured” generation
-		spark.memory.storageFraction:
-			 expresses the size of R as a fraction of M (default 0.5). 
-			 R is the storage space within M where cached blocks immune to being evicted by execution.
-		Determining Memory Consumption:
-			SizeEstimator’s estimate method
-			val catalyst_plan = df.queryExecution.logical, val df_size_in_bytes = spark.sessionState.executePlan(catalyst_plan).optimizedPlan.stats.sizeInBytes
+spark.memory.fraction:
+	-	expresses the size of M as a fraction of the (JVM heap space - 300MB) (default 0.6). 
+		The rest of the space (40%) is reserved for user data structures, internal metadata in Spark, 
+		and safeguarding against OOM errors in the case of sparse and unusually large records.
+	-	spark.memory.fraction should be set in order to fit this amount of heap space comfortably within the JVM’s old or “tenured” generation
+spark.memory.storageFraction:
+	 expresses the size of R as a fraction of M (default 0.5). 
+	 R is the storage space within M where cached blocks immune to being evicted by execution.
+Determining Memory Consumption:
+	SizeEstimator’s estimate method
+	val catalyst_plan = df.queryExecution.logical, val df_size_in_bytes = spark.sessionState.executePlan(catalyst_plan).optimizedPlan.stats.sizeInBytes
 		
 Tuning Data Structures:
 
-			-	Design your data structures to prefer arrays of objects, and primitive types, instead of the standard Java or Scala collection classes (e.g. HashMap). 
-				The fastutil library provides convenient collection classes for primitive types that are compatible with the Java standard library.
-			-	Avoid nested structures with a lot of small objects and pointers when possible.
-			-	Consider using numeric IDs or enumeration objects instead of strings for keys.
-			-	If you have less than 32 GB of RAM, set the JVM flag -XX:+UseCompressedOops to make pointers be four bytes instead of eight.
-				You can add these options in spark-env.sh.
+-	Design your data structures to prefer arrays of objects, and primitive types, instead of the standard Java or Scala collection classes (e.g. HashMap). 
+	The fastutil library provides convenient collection classes for primitive types that are compatible with the Java standard library.
+-	Avoid nested structures with a lot of small objects and pointers when possible.
+-	Consider using numeric IDs or enumeration objects instead of strings for keys.
+-	If you have less than 32 GB of RAM, set the JVM flag -XX:+UseCompressedOops to make pointers be four bytes instead of eight.
+	You can add these options in spark-env.sh.
 
 Garbage Collection Tuning:
 
 ![Alt text](http://4.bp.blogspot.com/-zkimVwbJjsE/VjdieYsQy9I/AAAAAAAABJw/9i4WWTaNbE8/s1600/loio44a438452ba94658a8e21f998d248fa4_LowRes.png)
 
-			-	JVM garbage collection can be a problem when you have large “churn” in terms of the RDDs stored by your program. 
-				(It is usually not a problem in programs that just read an RDD once and then run many operations on it.) 
-				When Java needs to evict old objects to make room for new ones, it will need to trace through all your Java objects 
-				and find the unused ones. The main point to remember here is that the cost of garbage collection is proportional to the number of Java objects, 
-				so using data structures with fewer objects (e.g. an array of Ints instead of a LinkedList) greatly lowers this cost.
+-	JVM garbage collection can be a problem when you have large “churn” in terms of the RDDs stored by your program. 
+	(It is usually not a problem in programs that just read an RDD once and then run many operations on it.) 
+	When Java needs to evict old objects to make room for new ones, it will need to trace through all your Java objects 
+	and find the unused ones. The main point to remember here is that the cost of garbage collection is proportional to the number of Java objects, 
+	so using data structures with fewer objects (e.g. an array of Ints instead of a LinkedList) greatly lowers this cost.
 			Measuring the Impact of GC:
 			
 				-	The first step in GC tuning is to collect statistics on how frequently garbage collection occurs and the amount of time spent GC. 
