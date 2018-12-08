@@ -1,12 +1,17 @@
 # Spark Tuning: #
 	
 ### Data Serialization: ###
+
     Data serialization, which is crucial for good network performance and can also reduce memory use
+
 #### Java serialization: ###
+
 	-   Spark serializes objects using Java’s ObjectOutputStream framework, and can work with any class you create that implements java.io.Serializable. 
         You can also control the performance of your serialization more closely by extending java.io.Externalizable. 
         Java serialization is flexible but often quite slow, and leads to large serialized formats for many classes.
+
 #### Kryo serialization: ####
+
     -   Spark can also use the Kryo library (version 4) to serialize objects more quickly. 
         Kryo is significantly faster and more compact than Java serialization (often as much as 10x), 
         but does not support all Serializable types and requires you to register the classes you’ll 
@@ -16,6 +21,7 @@
         but we recommend trying it in any network-intensive application
 	
 ## Memory Tuning: ##
+
     There are three considerations in tuning memory usage
 
 	 -  the amount of memory used by your objects (you may want your entire dataset to fit in memory)
@@ -71,15 +77,16 @@
 ![Alt text](http://4.bp.blogspot.com/-zkimVwbJjsE/VjdieYsQy9I/AAAAAAAABJw/9i4WWTaNbE8/s1600/loio44a438452ba94658a8e21f998d248fa4_LowRes.png)
 
     -	JVM garbage collection can be a problem when you have large “churn” in terms of the RDDs stored by your program. 
-	    (It is usually not a problem in programs that just read an RDD once and then run many operations on it.) 
-	    When Java needs to evict old objects to make room for new ones, it will need to trace through all your Java objects 
-	    and find the unused ones. The main point to remember here is that the cost of garbage collection is proportional to the number of Java objects, 
-	    so using data structures with fewer objects (e.g. an array of Ints instead of a LinkedList) greatly lowers this cost.
-	
-	#### Measuring the Impact of GC: ####
+        (It is usually not a problem in programs that just read an RDD once and then run many operations on it.) 
+        When Java needs to evict old objects to make room for new ones, it will need to trace through all your Java objects 
+        and find the unused ones. The main point to remember here is that the cost of garbage collection is proportional to the number of Java objects, 
+        so using data structures with fewer objects (e.g. an array of Ints instead of a LinkedList) greatly lowers this cost.
+
+#### Measuring the Impact of GC: ####
 			
     -   The first step in GC tuning is to collect statistics on how frequently garbage collection occurs and the amount of time spent GC. 
         This can be done by adding -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps to the Java options.
+
     Advanced GC Tuning:
         -	Java Heap space is divided in to two regions Young and Old. 
             The Young generation is meant to hold short-lived objects while the Old generation is intended for objects with longer lifetimes.
@@ -103,12 +110,14 @@
 ## Other Considerations: ##
 
 #### Level of Parallelism: ####
+
     -   Clusters will not be fully utilized unless you set the level of parallelism for each operation high enough. 
         Spark automatically sets the number of “map” tasks to run on each file according to its size (though you can control it through optional parameters to SparkContext.textFile, etc), 
         and for distributed “reduce” operations, such as groupByKey and reduceByKey, it uses the largest parent RDD’s number of partitions. 
         You can pass the level of parallelism as a second argument (see the spark.PairRDDFunctions documentation), or set the config property spark.default.parallelism to change the default.
 
 #### Memory Usage of Reduce Tasks: ####  
+
     -   you will get an OutOfMemoryError not because your RDDs don’t fit in memory, but because the working set of one of your tasks, 
         such as one of the reduce tasks in groupByKey, was too large. Spark’s shuffle operations (sortByKey, groupByKey, reduceByKey, join, etc) 
         build a hash table within each task to perform the grouping, which can often be large. 
@@ -123,6 +132,7 @@
         in general tasks larger than about 20 KB are probably worth optimizing.
 
 #### Data Locality: ####
+
     Data locality is how close data is to the code processing it.
     There are several levels of locality based on the data’s current location. In order from closest to farthest
     -   PROCESS_LOCAL: data is in the same JVM as the running code. This is the best locality possible

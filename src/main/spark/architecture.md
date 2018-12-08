@@ -3,7 +3,9 @@
 ![Alt text](https://jaceklaskowski.gitbooks.io/mastering-apache-spark/images/sparkstandalone-sparkcontext-taskscheduler-schedulerbackend.png)
 
 ![Alt text](https://hxquangnhat.files.wordpress.com/2015/03/scheduling.jpeg)    
+
 ### DAGScheduler: ###
+
         -   A stage is a set of independent tasks all computing the same function that need to run as part of a Spark job, 
             where all the tasks have the same shuffle dependencies. Each DAG of tasks run by the scheduler is split up into 
             stages at the boundaries where shuffle occurs, and then the DAGScheduler runs these stages in topological order.

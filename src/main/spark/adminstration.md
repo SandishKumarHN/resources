@@ -6,7 +6,6 @@
 ### Capacity Scheduler: ### 
 ### Dynamic Allocation: ### 
 ### Pools: ### 
-
     
 ## Yarn: ##
 ![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/08/yarnflow1.png)
@@ -31,7 +30,7 @@
         it is responsible for starting application masters and for monitoring and restarting them on different nodes in case of failures
  
 ## Node Manager: ##
-    ![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/09/Node-Manager-Diagram.png)
+![Alt text](https://2xbbhjxc6wk3v21p62t8n4d4-wpengine.netdna-ssl.com/wp-content/uploads/2012/09/Node-Manager-Diagram.png)
     
     -   It is the slave daemon of Yarn. NM is responsible for containers monitoring their resource usage and 
         reporting the same to the ResourceManager. Manage the user process on that machine. 
