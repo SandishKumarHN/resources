@@ -33,14 +33,61 @@
     more from here http://homepage.cs.latrobe.edu.au/zhe/ZhenHeSparkRDDAPIExamples.html#aggregateByKey
     
 ## Shuffle Operations: ##
-
+![Alt text](http://image.slidesharecdn.com/sparkshuffleintroduction-141228034437-conversion-gate01/95/spark-shuffle-introduction-16-638.jpg)
     
-## Caching ##
-## Shared Variable ##
-    Broadcasting:
-    Accumulators:       
-## RDD STORAGE: ##
+    -   The shuffle is Spark’s mechanism for re-distributing data so that it’s grouped differently across partitions. 
+        This typically involves copying data across executors and machines, making the shuffle a complex and costly operation.
+    -   single reduceByKey reduce task to execute, Spark needs to perform an all-to-all operation. It must read from all partitions to find all the values for all keys, and 
+        then bring together values across partitions to compute the final result for each key - this is called the shuffle.
+            mapPartitions to sort each partition using, for example, .sorted
+            repartitionAndSortWithinPartitions to efficiently sort partitions while simultaneously repartitioning
+            sortBy to make a globally ordered RDD
+    -   Operations which can cause a shuffle include repartition operations like repartition and coalesce, 
+        ‘ByKey operations (except for counting) like groupByKey and reduceByKey, and join operations like cogroup and join.
+    -   The Shuffle is an expensive operation since it involves disk I/O, data serialization, and network I/O. 
+        To organize data for the shuffle, Spark generates sets of tasks - map tasks to organize the data, and a set of reduce tasks to aggregate it.
+    -   Internally, results from individual map tasks are kept in memory until they can’t fit. 
+        Then, these are sorted based on the target partition and written to a single file. On the reduce side, tasks read the relevant sorted blocks.   
+    -   Certain shuffle operations can consume significant amounts of heap memory since they employ in-memory data structures to organize records before or after transferring them. 
+        Specifically, reduceByKey and aggregateByKey create these structures on the map side, and 'ByKey operations generate these on the reduce side. 
+        When data does not fit in memory Spark will spill these tables to disk, incurring the additional overhead of disk I/O and increased garbage collection.
 
+## RDD Persistence ##
+![Alt text](https://slideplayer.com/slide/4499936/14/images/37/Persistence+Persistence+levels+from+org.apache.spark.storage.StorageLevel+%2F+py+spark.StorageLevel.+Level..jpg)
+
+    -   
+
+## Caching ##
+
+
+## Shared Variable ##
+#### Broadcasting: #### 
+![Alt text](https://jaceklaskowski.gitbooks.io/mastering-apache-spark/images/sparkcontext-broadcast-executors.png)
+
+        -   Broadcast variables allow the programmer to keep a read-only variable cached on each machine rather than shipping a copy of it with tasks. 
+            They can be used, for example, to give every node a copy of a large input dataset in an efficient manner. Spark also attempts to distribute 
+            broadcast variables using efficient broadcast algorithms to reduce communication cost.
+        
+#### Accumulators: ####
+    -   Accumulators are variables that are only “added” to through an associative and commutative operation and can therefore be efficiently supported in parallel. 
+        They can be used to implement counters (as in MapReduce) or sums. Spark natively supports accumulators of numeric types, and programmers can add support for new types.   
+
+#### Checkpoint ####
+    For this to be possible, Spark Streaming needs to checkpoint enough information to a fault- tolerant storage system such that it can recover from failures.
+    Metadata checkpointing : 
+                    Saving of the information defining the streaming computation to fault-tolerant storage like HDFS. 
+                        Configuration - The configuration that was used to create the streaming application
+                        DStream operations - The set of DStream operations that define the streaming application.
+                        Incomplete batches - Batches whose jobs are queued but have not completed yet.
+    Data checkpointing : Saving of the generated RDDs to reliable storage. This is necessary in some stateful transformations that combine data across multiple batches. 
+    To summarize, metadata checkpointing is primarily needed for recovery from driver failures, whereas data or RDD checkpointing is necessary even for basic functioning if stateful transformations are used.
+    If either updateStateByKey or reduceByKeyAndWindow (with inverse function) is used in the application, then the checkpoint directory must be provided to allow for periodic RDD checkpointing. streamingContext.checkpoint(checkpointDirectory).
+
+#### Cache vs Checkpoint. ####
+
+    -   Cache materializes the RDD and keeps it in memory and/or disk（memory）. But the lineage（computing chain） of RDD (that is, seq of operations that generated the RDD) will be remembered, 
+        so that if there are node failures and parts of the cached RDDs are lost, they can be regenerated. However, checkpoint saves the RDD to an HDFS file and actually forgets the lineage completely. 
+        This is allows long lineages to be truncated and the data to be saved reliably in HDFS (which is naturally fault tolerant by replication).
 ## ReduceBy vs GroupBy vs aggregateByKey: ##
 
     -   groupByKey() is just to group your dataset based on a key. 
@@ -78,9 +125,15 @@
         -   Column oriented storage format.
         -   Schema is with the data, but as a part of footer.
         -   Data is stored as row groups and stripes
-
-
-
-
+## partitionBy vs Distribute By vs Cluster By ##
+    partitionBy: creates a directory structure as described in the Partition Discovery section. Thus, it has limited applicability to columns with high cardinality. In contrast bucketBy distributes data across a fixed number of buckets and can be used when a number of unique values is unbounded.
+                Partition divides large amount of data into multiple slices based on value of a table column(s). Bucketing decomposes data into more manageable or equal parts.
+                The difference is bucketing divides the files by Column Name, and partitioning divides the files under By a particular value inside table. In bucketing due to equal volumes of data in each partition, joins at Map side will be quicker.
+    Distribute By: Repartitions a DataFrame by the given expressions. The number of partitions is equal to spark.sql.shuffle.partitions. 
+    Cluster By: This is just a shortcut for using distribute by and sort by together on the same set of expressions.
+    sort by: to sort the data based on the data type of the column to be used for sorting per reducer i.e. overall sorting of output is not maintained. e.g. if column is of numeric type the data will be sorted per reducer in numeric order.
+    ORDER BY of SQL. The overall sorting is maintained in case of order by and output is produced in single reducer. Hence, we need to use limit clause so that reducer is not overloaded.
+    Distribute By to distribute the rows among reducers. All rows with the same Distribute By columns will go to the same reducer. However,Distribute By does not guarantee clustering or sorting properties on the distributed keys.
+    Cluster By is a short-cut for both Distribute By and Sort By.
 
 
