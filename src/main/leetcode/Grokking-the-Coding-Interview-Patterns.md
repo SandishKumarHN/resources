@@ -1,6 +1,6 @@
 #### Grokking the Coding Interview: Patterns for Coding Questions:
 	
-##### Sliding Window :
+##### 1 Sliding Window :
 
   - https://leetcode.com/problems/maximum-subarray/
   - https://leetcode.com/problems/minimum-size-subarray-sum/
@@ -13,7 +13,7 @@
   - https://leetcode.com/problems/minimum-window-substring/
   - https://leetcode.com/problems/substring-with-concatenation-of-all-words/
 
-##### Two Pointers: 
+##### 2 Two Pointers: 
 
   - https://leetcode.com/problems/two-sum/
   - https://leetcode.com/problems/remove-duplicates-from-sorted-array/
@@ -25,7 +25,7 @@
   - https://leetcode.com/problems/4sum/
   - https://leetcode.com/problems/backspace-string-compare/
 
-##### Merge Intervals:
+##### 3 Merge Intervals:
 
   - https://leetcode.com/problems/merge-intervals/
   - https://leetcode.com/problems/insert-interval/
@@ -35,7 +35,7 @@
   - https://leetcode.com/problems/employee-free-time/
   - https://www.geeksforgeeks.org/maximum-cpu-load-from-the-given-list-of-jobs/
 
-##### Fast and Flow Pointer:
+##### 4 Fast and Flow Pointer:
 
   - https://leetcode.com/problems/linked-list-cycle/
   - https://leetcode.com/problems/middle-of-the-linked-list/
@@ -45,7 +45,7 @@
   - https://leetcode.com/problems/reorder-list/
   - https://leetcode.com/problems/circular-array-loop/
 
-##### Cyclic Sort:
+##### 5 Cyclic Sort:
 
   - https://leetcode.com/problems/missing-number/solution/
   - https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
@@ -55,14 +55,14 @@
   - https://leetcode.com/problems/first-missing-positive/
   - https://leetcode.com/problems/kth-missing-positive-number/submissions/
 
-##### In-place Reversal of a LinkedList:
+##### 6 In-place Reversal of a LinkedList:
 
   - https://leetcode.com/problems/reverse-linked-list/
   - https://leetcode.com/problems/reverse-linked-list-ii/
-`	- https://leetcode.com/problems/reverse-nodes-in-k-group/
+	- https://leetcode.com/problems/reverse-nodes-in-k-group/
   - https://leetcode.com/problems/rotate-list/
 
-##### Tree Breadth First Search:
+##### 7 Tree Breadth First Search:
 
   - https://leetcode.com/problems/binary-tree-inorder-traversal/
   - https://leetcode.com/problems/binary-tree-level-order-traversal/
@@ -74,7 +74,7 @@
   - https://leetcode.com/problems/binary-tree-right-side-view/
   - https://leetcode.com/problems/cousins-in-binary-tree/ 	
 
-##### Tree Depth First Search:
+##### 8 Tree Depth First Search:
 
   - https://leetcode.com/problems/path-sum/
   - https://leetcode.com/problems/path-sum-ii/solution/
@@ -84,14 +84,14 @@
   - https://leetcode.com/problems/diameter-of-binary-tree/
   - https://leetcode.com/problems/binary-tree-maximum-path-sum/
 
-##### Two Heaps:
+##### 9 Two Heaps:
 
   - https://leetcode.com/problems/find-median-from-data-stream/
   - https://leetcode.com/problems/sliding-window-median/
   - https://leetcode.com/problems/ipo/
   - https://leetcode.com/problems/find-right-interval/
 
-##### Modified Binary Search:
+##### 10 Modified Binary Search:
 
   - https://leetcode.com/problems/binary-search/
   - https://leetcode.com/problems/find-smallest-letter-greater-than-target/
@@ -102,7 +102,7 @@
   - https://leetcode.com/problems/search-in-rotated-sorted-array/
   - https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
 
-##### Pattern Top 'K' Elements:
+##### 11 Pattern Top 'K' Elements:
 
   - https://leetcode.com/problems/top-k-frequent-elements/
   - https://leetcode.com/problems/kth-largest-element-in-an-array/
@@ -114,14 +114,14 @@
   - https://leetcode.com/problems/maximum-frequency-stack/
   - https://leetcode.com/problems/task-scheduler/
 
-##### K-way merge:
+##### 12 K-way merge:
 
   - https://leetcode.com/problems/merge-k-sorted-lists/
   - https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/
   - https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/
   - https://leetcode.com/problems/find-k-pairs-with-smallest-sums/
 
-##### Topological Sort(Graph):
+##### 13 Topological Sort(Graph):
   - https://www.youtube.com/watch?v=2l22FRtU45M&t=8s
   - https://leetcode.com/problems/course-schedule/
   - https://leetcode.com/problems/course-schedule-ii/submissions/
@@ -129,12 +129,3 @@
   - https://leetcode.com/problems/longest-increasing-path-in-a-matrix/submissions/
   - https://leetcode.com/problems/sequence-reconstruction/
   - https://leetcode.com/problems/minimum-height-trees/submissions/
-
-##### Cyclic Sort:
-
-  - https://leetcode.com/problems/missing-number/
-  - https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/
-  - https://leetcode.com/problems/find-the-duplicate-number/
-  - https://leetcode.com/problems/find-all-duplicates-in-an-array/
-  - https://leetcode.com/problems/number-of-good-pairs/
-  - https://leetcode.com/problems/first-missing-positive/
