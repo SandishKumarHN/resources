@@ -41,6 +41,9 @@
   - https://leetcode.com/problems/spiral-matrix/
   - https://leetcode.com/problems/rotate-image/
   - https://leetcode.com/problems/word-search/
+  - https://leetcode.com/problems/search-a-2d-matrix/
+  - https://leetcode.com/problems/number-of-islands/
+  - https://leetcode.com/problems/minimum-path-sum/
   
 ##### 4 Merge Intervals :
 
@@ -111,6 +114,7 @@
   - https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
   - https://leetcode.com/problems/kth-smallest-element-in-a-bst/
   - https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+  Trie:
   - https://leetcode.com/problems/implement-trie-prefix-tree/
   - https://leetcode.com/problems/add-and-search-word-data-structure-design/
   - https://leetcode.com/problems/word-search-ii/
@@ -166,14 +170,7 @@
   - https://leetcode.com/problems/graph-valid-tree/
   - https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/
 
-#### 15 Matrix:
-  - https://leetcode.com/problems/set-matrix-zeroes/
-  - https://leetcode.com/problems/spiral-matrix/
-  - https://leetcode.com/problems/rotate-image/
-  - https://leetcode.com/problems/word-search/
-  - https://leetcode.com/problems/number-of-islands/
-		
-#### 16 Dynamic Programing: 
+#### 15 Dynamic Programing: 
   - https://leetcode.com/problems/word-break/
   - https://leetcode.com/problems/house-robber/
   - https://leetcode.com/problems/house-robber-ii/
