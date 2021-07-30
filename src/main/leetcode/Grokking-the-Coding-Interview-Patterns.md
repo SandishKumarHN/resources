@@ -35,6 +35,7 @@
   - https://leetcode.com/problems/product-of-array-except-self/
   - https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
   - https://leetcode.com/problems/contains-duplicate/
+  - https://leetcode.com/problems/verifying-an-alien-dictionary/
 
 #### 3 Matrix :
   - https://leetcode.com/problems/set-matrix-zeroes/
@@ -65,6 +66,7 @@
   - https://leetcode.com/problems/palindrome-linked-list/
   - https://leetcode.com/problems/reorder-list/
   - https://leetcode.com/problems/circular-array-loop/
+  - https://leetcode.com/problems/sort-list/ 
 
 ##### 6 Cyclic Sort :
 
@@ -114,6 +116,7 @@
   - https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/
   - https://leetcode.com/problems/kth-smallest-element-in-a-bst/
   - https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/
+  - https://leetcode.com/problems/delete-nodes-and-return-forest/
   Trie:
   - https://leetcode.com/problems/implement-trie-prefix-tree/
   - https://leetcode.com/problems/add-and-search-word-data-structure-design/
@@ -182,4 +185,20 @@
   - https://leetcode.com/problems/jump-game/
   - https://leetcode.com/problems/coin-change/
 
-#### 17 HashMap, Heap, Stack, Queue:
+#### 16 Backtracking:
+  - https://leetcode.com/problems/subsets/
+  - https://leetcode.com/problems/subsets-ii/
+  - https://leetcode.com/problems/permutations/
+  - https://leetcode.com/problems/permutations-ii/
+  - https://leetcode.com/problems/combination-sum/
+  - https://leetcode.com/problems/combination-sum-ii/
+  - https://leetcode.com/problems/palindrome-pa rtitioning/
+  
+#### 17 HashMap, Heap, Stack, Queue, Cache:
+  - https://leetcode.com/problems/lru-cache/
+  - https://leetcode.com/problems/design-hashmap/
+  - https://leetcode.com/problems/design-hashset/
+  - https://leetcode.com/problems/design-circular-queue/
+  - https://leetcode.com/problems/implement-queue-using-stacks/
+  - https://leetcode.com/problems/implement-stack-using-queues/
+  - https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/
